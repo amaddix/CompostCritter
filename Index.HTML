@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Compost Crawler</title>
+<style>
+  body {
+    margin: 0;
+    background: #1b1f16;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: monospace;
+    color: #e8e6d9;
+  }
+  canvas {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    border: 4px solid #4a5a3a;
+    background: #cbd6b0;
+  }
+  #hud {
+    margin-top: 10px;
+    font-size: 18px;
+  }
+  #fact-box {
+    max-width: 480px;
+    margin-top: 10px;
+    padding: 10px;
+    background: #2a3320;
+    border: 2px solid #4a5a3a;
+    min-height: 20px;
+    text-align: center;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+  <canvas id="game" width="480" height="320"></canvas>
+  <div id="hud">Score: <span id="score">0</span></div>
+  <div id="fact-box">Sort waste into the right bin to learn a fact!</div>
+ 
+  <!-- Load order matters: state -> input -> entities -> update -> render -> main -->
+  <script src="src/state.js"></script>
+  <script src="src/input.js"></script>
+  <script src="src/entities.js"></script>
+  <script src="src/update.js"></script>
+  <script src="src/render.js"></script>
+  <script src="src/main.js"></script>
+</body>
+</html>
+ IN

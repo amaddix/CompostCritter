@@ -13,6 +13,13 @@ const state = {
     width: 32,
     height: 32,
     speed: 180, // pixels per second
+    facing: "right",   // "left" or "right" — controls horizontal flip
+    frameIndex: 0,     // which column of the spritesheet to draw
+    frameTimer: 0,     // seconds accumulated toward next frame
+    frameDuration: 0.12, // seconds per frame when moving (walk speed)
+    frameCount: 4,     // total frames in the spritesheet
+    isMoving: false,
+    carrying: null,    // null, or the item object currently held overhead
   },
   bins: [
     { type: "compost", x: 20, y: 0, width: 60, height: 320, color: "#5a3a1e" },
@@ -30,25 +37,25 @@ const ITEM_TYPES = [
   {
     type: "compost",
     label: "banana peel",
-    color: "#e0c14a",
+    spriteFrame: 0,
     fact: "Food scraps in landfills decompose without oxygen, producing methane — a greenhouse gas over 25x more potent than CO2 over 100 years.",
   },
   {
     type: "compost",
     label: "coffee grounds",
-    color: "#6b4a2f",
+    spriteFrame: 1,
     fact: "Composted coffee grounds enrich soil with nitrogen instead of releasing methane in a landfill.",
   },
   {
     type: "recycle",
     label: "aluminum can",
-    color: "#b8bcc2",
+    spriteFrame: 2,
     fact: "Recycling one aluminum can saves enough energy to power a TV for about 3 hours.",
   },
   {
     type: "recycle",
     label: "cardboard",
-    color: "#c8a165",
+    spriteFrame: 3,
     fact: "Recycled cardboard uses about 75% less energy to produce than making it from raw materials.",
   },
 ];

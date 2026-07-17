@@ -29,19 +29,62 @@ function drawBins(ctx) {
   }
 }
  
+const ITEM_FRAME_SIZE = 24; // must match items.png frame dimensions
+ 
 function drawFallingItems(ctx) {
   for (const item of state.fallingItems) {
-    // PLACEHOLDER: replace with
-    // ctx.drawImage(itemSpriteSheet, sx, sy, sw, sh, item.x, item.y, item.width, item.height);
-    ctx.fillStyle = item.color;
-    ctx.fillRect(item.x, item.y, item.width, item.height);
+    const sx = item.spriteFrame * ITEM_FRAME_SIZE;
+    ctx.drawImage(
+      sprites.items,
+      sx, 0, ITEM_FRAME_SIZE, ITEM_FRAME_SIZE,
+      item.x, item.y, item.width, item.height
+    );
   }
 }
  
+const PLAYER_FRAME_SIZE = 32; // must match the spritesheet's frame dimensions
+ 
 function drawPlayer(ctx) {
   const p = state.player;
-  // PLACEHOLDER: replace with
-  // ctx.drawImage(playerSpriteSheet, frameX, 0, 32, 32, p.x, p.y, p.width, p.height);
-  ctx.fillStyle = "#4caf50";
-  ctx.fillRect(p.x, p.y, p.width, p.height);
+  const sheet = sprites.player;
+ 
+  // source rect: which frame column to slice out of the sheet
+  const sx = p.frameIndex * PLAYER_FRAME_SIZE;
+  const sy = 0;
+ 
+  ctx.save();
+ 
+  if (p.facing === "left") {
+    // Flip horizontally around the sprite's own center, since the art
+    // is only drawn facing right. Translate to center, scale -1, draw
+    // offset back — this avoids flipping the whole canvas.
+    ctx.translate(p.x + p.width / 2, p.y + p.height / 2);
+    ctx.scale(-1, 1);
+    ctx.drawImage(
+      sheet,
+      sx, sy, PLAYER_FRAME_SIZE, PLAYER_FRAME_SIZE,
+      -p.width / 2, -p.height / 2, p.width, p.height
+    );
+  } else {
+    ctx.drawImage(
+      sheet,
+      sx, sy, PLAYER_FRAME_SIZE, PLAYER_FRAME_SIZE,
+      p.x, p.y, p.width, p.height
+    );
+  }
+ 
+  ctx.restore();
+ 
+  // Carried item hovers above the head — clear visual feedback for
+  // "hands are full, go deliver this before catching another"
+  if (p.carrying) {
+    const iconSize = 18;
+    const sx2 = p.carrying.spriteFrame * ITEM_FRAME_SIZE;
+    ctx.drawImage(
+      sprites.items,
+      sx2, 0, ITEM_FRAME_SIZE, ITEM_FRAME_SIZE,
+      p.x + p.width / 2 - iconSize / 2, p.y - iconSize - 4, iconSize, iconSize
+    );
+  }
 }
+ 
